@@ -54,14 +54,54 @@
 		17B267E022AF85E900784405 /* LoginWithFirebaseAndSocial */ = {
 			isa = PBXGroup;
 			children = (
-				17B267E122AF85E900784405 /* AppDelegate.swift */,
+				17B267F322AF85F500784405 /* Global */,
 				17B267E322AF85E900784405 /* ViewController.swift */,
-				17B267E522AF85E900784405 /* Main.storyboard */,
-				17B267E822AF85EA00784405 /* Assets.xcassets */,
-				17B267EA22AF85EA00784405 /* LaunchScreen.storyboard */,
-				17B267ED22AF85EA00784405 /* Info.plist */,
 			);
 			path = LoginWithFirebaseAndSocial;
+			sourceTree = "<group>";
+		};
+		17B267F322AF85F500784405 /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				17B267F722AF861100784405 /* Model */,
+				17B267F622AF860B00784405 /* View */,
+				17B267F522AF860400784405 /* Controller */,
+				17B267F422AF85FE00784405 /* Service */,
+			);
+			path = Global;
+			sourceTree = "<group>";
+		};
+		17B267F422AF85FE00784405 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				17B267ED22AF85EA00784405 /* Info.plist */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		17B267F522AF860400784405 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				17B267E122AF85E900784405 /* AppDelegate.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		17B267F622AF860B00784405 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				17B267E822AF85EA00784405 /* Assets.xcassets */,
+				17B267EA22AF85EA00784405 /* LaunchScreen.storyboard */,
+				17B267E522AF85E900784405 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		17B267F722AF861100784405 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
