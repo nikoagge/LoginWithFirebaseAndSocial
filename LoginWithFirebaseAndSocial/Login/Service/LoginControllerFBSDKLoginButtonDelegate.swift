@@ -10,6 +10,7 @@
 import Foundation
 import UIKit
 import FBSDKLoginKit
+import Firebase
 
 
 extension LoginController: LoginButtonDelegate {
@@ -35,6 +36,23 @@ extension LoginController: LoginButtonDelegate {
     
     
     func showEmailAddress() {
+        
+        let accessToken = AccessToken.current
+        
+        guard let accessTokenString = accessToken?.tokenString else { return }
+        let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
+        
+        Auth.auth().signIn(with: credentials) { (user, error) in
+            
+            if error != nil {
+                
+                print("Something went wrong with our FB user: ", error)
+                
+                return
+            }
+            
+            print("Successfully logged in")
+        }
         
         GraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email"]).start { (connection, result, error) in
             
