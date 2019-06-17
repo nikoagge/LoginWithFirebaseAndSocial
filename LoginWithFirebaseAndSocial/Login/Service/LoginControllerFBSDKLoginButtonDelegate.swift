@@ -12,16 +12,16 @@ import UIKit
 import FBSDKLoginKit
 
 
-extension LoginController: FBSDKLoginButtonDelegate {
+extension LoginController: LoginButtonDelegate {
     
     
-    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton!) {
         
         print("User did logout from Facebook. Feel free to come back again :)")
     }
     
     
-    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+    func loginButton(_ loginButton: FBLoginButton!, didCompleteWith result: LoginManagerLoginResult!, error: Error!) {
         
         if error != nil {
             
@@ -30,6 +30,22 @@ extension LoginController: FBSDKLoginButtonDelegate {
             return
         }
         
-        print("User successfully logged in with Facebook!")
+        self.showEmailAddress()
+    }
+    
+    
+    func showEmailAddress() {
+        
+        GraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email"]).start { (connection, result, error) in
+            
+            if error != nil {
+                
+                print("Failed to start graph request:", error)
+                
+                return
+            }
+            
+            print(result)
+        }
     }
 }
