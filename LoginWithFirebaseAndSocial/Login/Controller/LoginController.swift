@@ -10,6 +10,7 @@
 import UIKit
 import FBSDKLoginKit
 import Firebase
+import GoogleSignIn
 
 
 class LoginController: UIViewController {
@@ -40,6 +41,31 @@ class LoginController: UIViewController {
     }()
     
     
+    lazy var googleButton: GIDSignInButton = {
+        
+        let gb = GIDSignInButton()
+        gb.translatesAutoresizingMaskIntoConstraints = false
+        
+        GIDSignIn.sharedInstance()?.delegate = self
+        
+        return gb
+    }()
+    
+    lazy var customGoogleLoginButton: UIButton = {
+        
+        let cglb = UIButton(type: .system)
+        cglb.backgroundColor = .orange
+        cglb.setTitle("Custom Google Sign In", for: .normal)
+        cglb.setTitleColor(.white, for: .normal)
+        cglb.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        cglb.translatesAutoresizingMaskIntoConstraints = false
+        
+        cglb.addTarget(self, action: #selector(customGoogleLoginButtonTapped), for: .touchUpInside)
+        
+        return cglb
+    }()
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -52,6 +78,8 @@ class LoginController: UIViewController {
         
         view.addSubview(fbLoginButton)
         view.addSubview(customFBLoginButton)
+        view.addSubview(googleButton)
+        view.addSubview(customGoogleLoginButton)
         
         //Set x, y, width, height constraints for fbLoginButton:
         fbLoginButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
@@ -64,6 +92,18 @@ class LoginController: UIViewController {
         customFBLoginButton.topAnchor.constraint(equalTo: fbLoginButton.bottomAnchor, constant: 66).isActive = true
         customFBLoginButton.rightAnchor.constraint(equalTo: fbLoginButton.rightAnchor).isActive = true
         customFBLoginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        //Set x, y, width and height constraints for googleButton:
+        googleButton.leftAnchor.constraint(equalTo: fbLoginButton.leftAnchor).isActive = true
+        googleButton.topAnchor.constraint(equalTo: customFBLoginButton.bottomAnchor, constant: 66).isActive = true
+        googleButton.rightAnchor.constraint(equalTo: fbLoginButton.rightAnchor).isActive = true
+        googleButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        //Set x, y, width and height constraints for customGoogleLoginButton:
+        customGoogleLoginButton.leftAnchor.constraint(equalTo: googleButton.leftAnchor).isActive = true
+        customGoogleLoginButton.topAnchor.constraint(equalTo: googleButton.bottomAnchor, constant: 66).isActive = true
+        customGoogleLoginButton.rightAnchor.constraint(equalTo: googleButton.rightAnchor).isActive = true
+        customGoogleLoginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     
@@ -80,6 +120,12 @@ class LoginController: UIViewController {
             
             self.showEmailAddress()
         }
+    }
+    
+    
+    @objc func customGoogleLoginButtonTapped() {
+        
+        GIDSignIn.sharedInstance()?.signIn()
     }
 }
 

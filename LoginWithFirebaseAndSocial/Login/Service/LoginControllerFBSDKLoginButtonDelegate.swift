@@ -11,9 +11,10 @@ import Foundation
 import UIKit
 import FBSDKLoginKit
 import Firebase
+import GoogleSignIn
 
 
-extension LoginController: LoginButtonDelegate {
+extension LoginController: LoginButtonDelegate, GIDSignInDelegate {
     
     
     func loginButtonDidLogOut(_ loginButton: FBLoginButton!) {
