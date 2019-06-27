@@ -11,6 +11,8 @@ import UIKit
 import FBSDKLoginKit
 import Firebase
 import GoogleSignIn
+import SafariServices
+import TwitterKit
 
 
 class LoginController: UIViewController {
@@ -66,6 +68,17 @@ class LoginController: UIViewController {
     }()
     
     
+    lazy var twitterLoginButton: TWTRLogInButton = {
+        
+        let tlb = TWTRLogInButton(type: .system)
+        tlb.translatesAutoresizingMaskIntoConstraints = false
+        
+        tlb.addTarget(self, action: #selector(twitterLoginButtonTapped), for: .touchUpInside)
+        
+        return tlb
+    }()
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -80,6 +93,7 @@ class LoginController: UIViewController {
         view.addSubview(customFBLoginButton)
         view.addSubview(googleButton)
         view.addSubview(customGoogleLoginButton)
+        view.addSubview(twitterLoginButton)
         
         //Set x, y, width, height constraints for fbLoginButton:
         fbLoginButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
@@ -104,6 +118,12 @@ class LoginController: UIViewController {
         customGoogleLoginButton.topAnchor.constraint(equalTo: googleButton.bottomAnchor, constant: 66).isActive = true
         customGoogleLoginButton.rightAnchor.constraint(equalTo: googleButton.rightAnchor).isActive = true
         customGoogleLoginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        //Set x, y, width and height constraints for twitterLoginButton:
+        twitterLoginButton.leftAnchor.constraint(equalTo: customGoogleLoginButton.leftAnchor).isActive = true
+        twitterLoginButton.topAnchor.constraint(equalTo: customGoogleLoginButton.bottomAnchor, constant: 66).isActive = true
+        twitterLoginButton.rightAnchor.constraint(equalTo: customGoogleLoginButton.rightAnchor).isActive = true
+        twitterLoginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     
@@ -126,6 +146,39 @@ class LoginController: UIViewController {
     @objc func customGoogleLoginButtonTapped() {
         
         GIDSignIn.sharedInstance()?.signIn()
+    }
+    
+    
+    @objc func twitterLoginButtonTapped() {
+        
+        twitterLoginButton = TWTRLogInButton(logInCompletion: { (session, error) in
+            
+            if (session != nil) {
+                
+                print("signed in as \(session!.userName)")
+            } else {
+                
+                print("error: \(error!.localizedDescription)");
+            }
+            
+            guard let token = session?.authToken else { return }
+            
+            guard let secret = session?.authTokenSecret else { return }
+            
+            let credentials = TwitterAuthProvider.credential(withToken: token, secret: secret)
+            
+            Auth.auth().signIn(with: credentials, completion: { (user, error) in
+                
+                if let err = error {
+                    print("Failed to login to Firebase with Twitter: ", err)
+                    return
+                }
+                
+                print("Successfully created a Firebase-Twitter user: ", user?.user
+                    .uid ?? "")
+                
+            })
+        })
     }
 }
 

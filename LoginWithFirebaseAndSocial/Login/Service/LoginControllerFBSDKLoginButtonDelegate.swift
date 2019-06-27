@@ -67,4 +67,9 @@ extension LoginController: LoginButtonDelegate, GIDSignInDelegate {
             print(result)
         }
     }
+    
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        
+    }
 }
